@@ -66,16 +66,23 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/mi-lista">Mi Lista</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/populares">Populares</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/lista}">Mi Lista</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/popular}">Populares</a></li>
+                        <li class="nav-item d-flex align-items-center" th:if="${tmdbSession != null}">
+                            <span class="me-3" th:text="${tmdbUser}">usuario</span>
+                        </li>
+
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="btn btn-login" href="/login">
-                                <i class="bi bi-person-circle me-1"></i> Iniciar sesión
-                            </a>
+                        <li class="nav-item" th:if="${tmdbSession == null}">
+                            <a class="btn btn-login" href="/login"> Iniciar Sesion </a>
                         </li>
+                        <li class="nav-item" th:if="${tmdbSession != null}">
+                            <a class="btn btn-outline-light" href="/logout"> Cerrar Sesion </a>
+                        </li>
+
                     </ul>
+
                 </div>
             </div>
         </nav>

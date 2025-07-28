@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+    <head>
+        <title layout:title-content="${pelicula.title}">Detalle: [[${pelicula.title}]]</title>
+        <style>
+            .backdrop {
+                width: 100%;
+                height: 400px;
+                background-size: cover;
+                background-position: center;
+            }
+            .poster {
+                max-width: 250px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <section layout:fragment="content">
+            <div class="container my-4 text-white">
+
+                <!-- Backdrop -->
+                <div class="backdrop mb-4"
+                     th:style="'background-image: url(https://image.tmdb.org/t/p/original' + ${pelicula.backdropPath} + ')'">
+                </div>
+
+                <div class="row g-4">
+                    <!-- Poster -->
+                    <div class="col-md-4 text-center">
+                        <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
+                             th:alt="${pelicula.title}" class="poster img-fluid rounded"/>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="col-md-8">
+                        <h2 th:text="${pelicula.title}">Título de la Película</h2>
+                        <p>
+                            <strong>Fecha de estreno:</strong>
+                            <span th:text="${pelicula.releaseDate}">YYYY-MM-DD</span>
+                        </p>
+                        <p>
+                            <strong>Duración:</strong>
+                            <span th:text="${pelicula.runtime} + ' min'">120 min</span>
+                        </p>
+                        <p>
+                            <strong>Calificación:</strong>
+                            <span th:text="${pelicula.voteAverage} + '/10'">8.5/10</span>
+                            (<span th:text="${pelicula.voteCount}">1234</span> votos)
+                        </p>
+                        <p>
+                            <strong>Géneros:</strong>
+                            <span th:each="g, iterStat : ${pelicula.genres}"
+                                  th:text="${g.name}"
+                                  th:append="${!iterStat.last} ? ', ' : ''">Acción</span>
+                        </p>
+
+                        <hr class="border-secondary"/>
+
+                        <h5>Sinopsis</h5>
+                        <p th:text="${pelicula.overview}">Resumen de la película…</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
