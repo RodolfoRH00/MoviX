@@ -37,7 +37,6 @@ public class ServiceTheMovieDB {
         return h;
     }
 
-    // --- auth endpoints ---
     public Token newRequestToken() {
         var entity = new HttpEntity<Void>(jsonHeaders());
         return rt()
@@ -84,7 +83,6 @@ public class ServiceTheMovieDB {
         return Boolean.TRUE.equals(resp.get("success"));
     }
 
-    // --- movie categories ---
     public List<Pelicula> getPopularMovies() {
         var entity = new HttpEntity<Void>(jsonHeaders());
         ListaPelicula lp = rt()

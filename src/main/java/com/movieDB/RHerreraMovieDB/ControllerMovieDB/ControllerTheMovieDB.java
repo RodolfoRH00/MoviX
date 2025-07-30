@@ -5,9 +5,7 @@ import com.movieDB.RHerreraMovieDB.ML.Pelicula;
 import com.movieDB.RHerreraMovieDB.ML.Token;
 import com.movieDB.RHerreraMovieDB.ServiceMovieDB.ServiceTheMovieDB;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,6 @@ public class ControllerTheMovieDB {
     @Autowired
     private ServiceTheMovieDB service;
 
-    // ——— auth flow ———
 // Mostrar formulario
     @GetMapping("/login")
     public String showLoginForm(Model model) {
