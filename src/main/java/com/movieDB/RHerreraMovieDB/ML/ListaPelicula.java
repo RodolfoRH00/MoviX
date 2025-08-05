@@ -1,26 +1,18 @@
 package com.movieDB.RHerreraMovieDB.ML;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class ListaPelicula {
 
-    private int Page;
-    private List<Pelicula> Results;
-
-    public int getPage() {
-        return Page;
-    }
-
-    public void setPage(int Page) {
-        this.Page = Page;
-    }
+    @JsonProperty("results")        // ←  nombre exacto del campo TMDb
+    private List<Pelicula> results;
 
     public List<Pelicula> getResults() {
-        return Results;
+        return results;
     }
 
     public void setResults(List<Pelicula> results) {
-        this.Results = results;
+        this.results = results;
     }
-
 }

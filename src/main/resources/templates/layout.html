@@ -2,55 +2,46 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title layout:title-pattern="$CONTENT_TITLE | CineX">CineX</title>
 
         <!-- Bootstrap & Icons -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
 
         <style>
-            body {
-                background-color: #121212;
-                color: white;
-                font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-                margin: 0;
-                padding-top: 70px;
+            body{
+                background:#121212;
+                color:#fff;
+                font-family:'Segoe UI','Helvetica Neue',sans-serif;
+                padding-top:70px
             }
-
-            .navbar {
-                background-color: #141414;
+            .navbar{
+                background:#141414
             }
-
-            .navbar-brand,
-            .nav-link {
-                color: #fff !important;
-                font-weight: 500;
+            .navbar-brand,.nav-link{
+                color:#fff!important;
+                font-weight:500
             }
-
-            .navbar-brand {
-                font-size: 1.5rem;
-                font-weight: bold;
-                letter-spacing: -0.5px;
+            .navbar-brand{
+                font-size:1.5rem;
+                font-weight:bold
             }
-
-            .nav-link:hover {
-                color: #e50914 !important;
+            .nav-link:hover{
+                color:#e50914!important
             }
-
-            .btn-login {
-                background-color: #e50914;
-                border: none;
-                color: white;
-                font-weight: 500;
-                padding: 0.3rem 0.9rem;
-                border-radius: 0.25rem;
+            .btn-login{
+                background:#e50914;
+                border:none;
+                color:#fff;
+                font-weight:500;
+                padding:.3rem .9rem
             }
-
-            .btn-login:hover {
-                background-color: #f40612;
+            .btn-login:hover{
+                background:#f40612
             }
         </style>
     </head>
@@ -59,36 +50,102 @@
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container-fluid px-4">
                 <a class="navbar-brand" href="/">CineX</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarContent">
+
+                    <!-- navegación principal -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/lista}">Mi Lista</a></li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/popular}">Populares</a></li>
-                        <li class="nav-item d-flex align-items-center" th:if="${tmdbSession != null}">
-                            <span class="me-3" th:text="${tmdbUser}">usuario</span>
-                        </li>
+                    </ul>
+
+                    <!-- selector de idioma -->
+                    <ul class="navbar-nav ms-auto me-3">
 
                     </ul>
+
+                    <!-- login / logout -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item" th:if="${tmdbSession == null}">
-                            <a class="btn btn-login" href="/login"> Iniciar Sesion </a>
+                        <li class="nav-item dropdown">
+                            <!-- disparador -->
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="langDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <i class="bi bi-translate"></i>
+                                <span th:text="${currentLanguage}">es</span>
+                            </a>
+                            <!-- lista -->
+                            <ul class="dropdown-menu dropdown-menu-end"
+                                aria-labelledby="langDropdown">
+                                <li th:each="language : ${languages}">
+                                    <a class="dropdown-item"
+                                       th:href="@{/language(lang=${language.iso_639_1})}"
+                                       th:classappend="${language.iso_639_1 == currentLanguage} ? ' active'">
+                                        <span th:text="${language.english_name}">English</span>
+                                        <i class="bi bi-check"
+                                           th:if="${language.iso_639_1 == currentLanguage}"></i>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item" th:if="${tmdbSession != null}">
-                            <a class="btn btn-outline-light" href="/logout"> Cerrar Sesion </a>
+                        <li>
+                            <span th:utext="|@${session.tmdb_username} &nbsp;|"></span>    
                         </li>
-
+                        <li class="nav-item" th:if="${session.tmdb_session == null}">
+                            <a class="btn btn-login" href="/login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.tmdb_session != null}">
+                            <a class="btn btn-outline-light" href="/logout">Cerrar Sesión</a>
+                        </li>
                     </ul>
 
-                </div>
-            </div>
-        </nav>
+                </div><!-- /.collapse -->
+            </div><!-- /.container -->
 
+        </nav>
+        <div class="container mb-4">
+            <div class="my-4">
+                <a class="btn">
+                    Peliculas              
+                </a>
+                <a class="btn">
+                    Tv
+                </a>
+            </div>
+        </div>
+
+        <!-- contenido inyectado por las vistas hijas -->
         <main layout:fragment="content"></main>
 
+        <!-- Bootstrap bundle (Popper incluido) – una sola vez -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Toast para mensajes -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="cinexToast" class="toast text-bg-dark"
+                 role="alert"
+                 th:classappend="${toast} == null ? ' d-none'">
+                <div class="toast-body d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span th:text="${toast}">Añadida a tu lista</span>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const toastEl = document.getElementById('cinexToast');
+            if (toastEl && !toastEl.classList.contains('d-none')) {
+                new bootstrap.Toast(toastEl, {delay: 2500}).show();
+            }
+        </script>
+
     </body>
 </html>

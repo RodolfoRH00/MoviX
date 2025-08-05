@@ -5,9 +5,61 @@
 
     <head>
         <title layout:title-content="Populares">Películas Populares</title>
+
+        <!------------  ESTILOS  ------------>
         <style>
-            .card-img-overlay.overlay {
-                background: linear-gradient(to top, rgba(18,18,18,0.9) 40%, transparent);
+            /* Tarjeta principal */
+            .movie-card {
+                border: 0;
+                background: #000;                 /* evita parpadeo al cargar img */
+            }
+
+            /* Imagen */
+            .movie-card .poster {
+                object-fit: cover;
+                height: 330px;
+                transition: transform .4s;
+            }
+            .movie-card:hover .poster {
+                transform: scale(1.08);
+            }
+
+            /* Capa “info-pill” –— texto sobre fondo semitransparente */
+            .info-pill {
+                --bs-bg-opacity: .60;             /* 60 % opacidad */
+                background-color: rgba(0, 0, 0, var(--bs-bg-opacity));
+                backdrop-filter: blur(2px);
+                border-radius: .5rem .5rem 0 0;   /* sólo arriba redondeado */
+            }
+
+            /* Título y sinopsis */
+            .movie-title {
+                font-size: .95rem;
+                font-weight: 600;
+                color: #fff;
+                margin-bottom: .25rem;
+            }
+            .movie-overview {
+                font-size: .8rem;
+                color: rgba(255, 255, 255, .85);
+                line-height: 1.25;
+                max-height: 3.2em;                /* ≈ 2 líneas */
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Botones */
+            .btn-glass {
+                --bs-btn-color: #fff;
+                --bs-btn-bg: rgba(255, 255, 255, .25);
+                --bs-btn-border-color: transparent;
+                --bs-btn-hover-bg: rgba(255, 255, 255, .4);
+                --bs-btn-active-bg: rgba(255, 255, 255, .6);
+                backdrop-filter: blur(3px);
+            }
+            .btn-glass-danger {
+                --bs-btn-bg: rgba(220, 53, 69, .65);
+                --bs-btn-hover-bg: rgba(220, 53, 69, .8);
             }
         </style>
     </head>
@@ -16,49 +68,53 @@
         <section layout:fragment="content">
             <div class="container py-4">
                 <h1 class="mb-4">Películas Populares</h1>
+
                 <div class="row row-cols-2 row-cols-md-4 g-4">
                     <div th:each="pelicula : ${pelis}" class="col">
-                        <div class="card bg-dark text-white h-100 border-0">
-                            <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
-                                 th:alt="${pelicula.title}" class="card-img-top"
-                                 style="object-fit:cover; height:330px;" />
-                            <div class="card-img-overlay overlay d-flex flex-column justify-content-end p-2">
-                                <h5 class="card-title" th:text="${pelicula.title}">Título</h5>
-                                <p class="card-text small"
-                                   th:text="${pelicula.overview}"
-                                   style="max-height:3em; overflow:hidden; text-overflow:ellipsis; line-height:1.2;">Descripción</p>
-                                <div class="mt-2">
-                                    <!-- Si ya está en favoritos, mostrar botón Quitar -->
-                                    <div th:if="${favoriteIds.contains(pelicula.id)}" style="display:inline;">
-                                        <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                            <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                            <input type="hidden" name="favorite" value="false" />
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Quitar de mi lista">
-                                                <i class="bi bi-x-lg"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <!-- Si no está, mostrar botón Agregar -->
-                                    <div th:unless="${favoriteIds.contains(pelicula.id)}" style="display:inline;">
-                                        <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                            <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                            <input type="hidden" name="favorite" value="true" />
-                                            <button type="submit" class="btn btn-sm btn-light" title="Agregar a mi lista">
-                                                <i class="bi bi-plus-lg"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <!-- Botón Ver detalles -->
-                                    <a th:href="@{'/movie/' + ${pelicula.id}}"
-                                       class="btn btn-sm btn-outline-light ms-1" title="Ver detalles">
+                        <div class="card movie-card h-100 text-white">
+                            <!-- POSTER -->
+                            <img class="card-img-top poster"
+                                 th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
+                                 th:alt="${pelicula.title}"/>
+
+                            <!-- INFO PILL -->
+                            <div class="info-pill p-2">
+                                <div class="movie-title" th:text="${pelicula.title}">Título</div>
+                                <p class="movie-overview" th:text="${pelicula.overview}">
+                                    Sinopsis de la película…
+                                </p>
+
+                                <!-- BOTONERA -->
+                                <div class="mt-2 d-flex align-items-center gap-1">
+                                    <!---- Fav / Unfav -->
+                                    <form th:action="@{/favorite}" method="post" th:if="${favoriteIds.contains(pelicula.id)}">
+                                        <input type="hidden" name="mediaId" th:value="${pelicula.id}"/>
+                                        <input type="hidden" name="favorite" value="false"/>
+                                        <button class="btn btn-sm btn-glass-danger" title="Quitar de mi lista">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+
+                                    <form th:action="@{/favorite}" method="post" th:unless="${favoriteIds.contains(pelicula.id)}">
+                                        <input type="hidden" name="mediaId" th:value="${pelicula.id}"/>
+                                        <input type="hidden" name="favorite" value="true"/>
+                                        <button class="btn btn-sm btn-glass" title="Agregar a mi lista">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </form>
+
+                                    <!---- Detalles -->
+                                    <a class="btn btn-sm btn-outline-light ms-auto"
+                                       th:href="@{'/movie/' + ${pelicula.id}}"
+                                       title="Ver detalles">
                                         <i class="bi bi-info-circle"></i>
                                     </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </div> <!-- /info-pill -->
+                        </div>   <!-- /card -->
+                    </div>     <!-- /col -->
+                </div>       <!-- /row -->
+            </div>         <!-- /container -->
         </section>
     </body>
 </html>

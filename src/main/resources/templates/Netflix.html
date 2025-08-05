@@ -6,102 +6,100 @@
     <head>
         <title layout:title-content="Inicio">Inicio</title>
         <style>
-            h1 {
-                font-weight: 600;
-                font-size: 2.1rem;
-                margin-bottom: 1.5rem;
+            h1{
+                font-weight:600;
+                font-size:2.1rem;
+                margin-bottom:1.5rem;
             }
-            .peliculas-container {
-                display: flex;
-                overflow-x: auto;
-                gap: 1rem;
-                padding-left: 0.5rem;
+            .peliculas-container{
+                display:flex;
+                overflow-x:auto;
+                gap:1rem;
+                padding-left:.5rem;
             }
-            .pelicula-card {
-                position: relative;
-                width: 220px;
-                height: 330px;
-                border-radius: 0.75rem;
-                overflow: hidden;
-                background-color: #1f1f1f;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-                flex-shrink: 0;
-                transition: transform 0.3s ease;
+            .pelicula-card{
+                position:relative;
+                width:220px;
+                height:330px;
+                border-radius:.75rem;
+                overflow:hidden;
+                background:#1f1f1f;
+                box-shadow:0 2px 10px rgba(0,0,0,.4);
+                flex-shrink:0;
+                transition:transform .3s ease;
             }
-            .pelicula-card:hover {
-                transform: scale(1.05);
-                z-index: 10;
+            .pelicula-card:hover{
+                transform:scale(1.05);
+                z-index:10;
             }
-            .pelicula-card img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
+            .pelicula-card img{
+                width:100%;
+                height:100%;
+                object-fit:cover;
             }
-            .pelicula-overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 100%;
-                background: linear-gradient(to top, rgba(18,18,18,0.95) 50%, rgba(0,0,0,0.2) 90%, transparent);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                padding: 1rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
+            .pelicula-overlay{
+                position:absolute;
+                inset:0;
+                height:100%;
+                background:linear-gradient(to top,rgba(18,18,18,.95) 50%,
+                    rgba(0,0,0,.2) 90%,transparent);
+                opacity:0;
+                transition:opacity .3s ease;
+                padding:1rem;
+                display:flex;
+                flex-direction:column;
+                justify-content:flex-end;
             }
-            .pelicula-card:hover .pelicula-overlay {
-                opacity: 1;
+            .pelicula-card:hover .pelicula-overlay{
+                opacity:1;
             }
-            .pelicula-title {
-                font-size: 1rem;
-                font-weight: 600;
-                color: white;
-                margin-bottom: 0.5rem;
+            .pelicula-title{
+                font-size:1rem;
+                font-weight:600;
+                color:#fff;
+                margin-bottom:.5rem;
             }
-            .pelicula-buttons {
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-                margin-bottom: 0.6rem;
+            .pelicula-buttons{
+                display:flex;
+                align-items:center;
+                gap:.4rem;
+                margin-bottom:.6rem;
             }
-            .pelicula-buttons .btn-play {
-                background-color: white;
-                color: black;
-                font-weight: 600;
-                font-size: 0.9rem;
-                padding: 0.35rem 0.9rem;
-                border-radius: 0.25rem;
-                border: none;
-                display: flex;
-                align-items: center;
-                gap: 0.3rem;
+            .btn-play{
+                background:#fff;
+                color:#000;
+                font-weight:600;
+                font-size:.9rem;
+                padding:.35rem .9rem;
+                border:none;
+                border-radius:.25rem;
+                display:flex;
+                gap:.3rem;
             }
-            .pelicula-buttons .btn-icon {
-                width: 32px;
-                height: 32px;
-                padding: 0;
-                border: none;
-                background-color: rgba(255,255,255,0.2);
-                border-radius: 50%;
-                color: white;
-                font-size: 1.1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: background 0.2s ease;
+            .btn-icon{
+                width:32px;
+                height:32px;
+                border:none;
+                padding:0;
+                border-radius:50%;
+                background:rgba(255,255,255,.2);
+                color:#fff;
+                font-size:1.1rem;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                transition:background .2s ease;
             }
-            .pelicula-buttons .btn-icon:hover {
-                background-color: rgba(255,255,255,0.4);
+            .btn-icon:hover{
+                background:rgba(255,255,255,.4);
             }
-            .pelicula-overview {
-                font-size: 0.85rem;
-                color: #ccc;
-                max-height: 5em;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                line-height: 1.4;
+            .pelicula-overview{
+                font-size:.85rem;
+                color:#ccc;
+                max-height:5em;
+                overflow:hidden;
+                text-overflow:ellipsis;
+                line-height:1.4;
             }
         </style>
     </head>
@@ -109,150 +107,66 @@
     <body>
         <section layout:fragment="content">
 
-            <!-- Películas Populares -->
-            <div class="container py-4">
-                <h1>Películas Populares</h1>
-                <div class="peliculas-container">
-                    <div th:each="pelicula : ${populares}" class="pelicula-card">
-                        <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
-                             th:alt="${pelicula.title}" />
-                        <div class="pelicula-overlay">
-                            <div class="pelicula-title" th:text="${pelicula.title}">Título</div>
-                            <div class="pelicula-buttons">
-                                <button class="btn-play" title="Ver ahora">
-                                    <i class="bi bi-play-fill"></i> Ver
-                                </button>
-                                <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                    <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                    <input type="hidden" name="favorite" value="true" />
-                                    <button type="submit" class="btn-icon" title="Agregar a mi lista">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                </form>
+            <!-- ======== FUNCIÓN AUXILIAR PARA RENDERIZAR UN CARRUSEL ========= -->
+            <div th:fragment="carrusel(titulo, lista)">
+                <div class="container py-4">
+                    <h1 th:text="${titulo}">Título sección</h1>
 
-                                <button class="btn-icon" title="Me gusta">
-                                    <i class="bi bi-hand-thumbs-up"></i>
-                                </button>
-                                <button class="btn-icon" title="No me gusta">
-                                    <i class="bi bi-hand-thumbs-down"></i>
-                                </button>
-                                <a class="btn-icon" title="Más información" th:href="|@{/movie/}${pelicula.id}|">
-                                    <i class="bi bi-info-circle"></i>
-                                </a>
+                    <div class="peliculas-container">
+                        <div th:each="pelicula : ${lista}" class="pelicula-card">
+                            <img th:src="@{|https://image.tmdb.org/t/p/w500${pelicula.posterPath}|}"
+                                 th:alt="${pelicula.title}"/>
+
+                            <div class="pelicula-overlay">
+                                <div class="pelicula-title" th:text="${pelicula.title}">Título</div>
+
+                                <div class="pelicula-buttons">
+                                    <!-- reproducir (demo) -->
+                                    <button class="btn-play" title="Ver ahora">
+                                        <i class="bi bi-play-fill"></i> Ver
+                                    </button>
+
+                                    <!-- ADD / REMOVE favorito -->
+                                    <form th:action="@{/favorite}" method="post" style="display:inline;">
+                                        <input type="hidden" name="mediaId" th:value="${pelicula.id}"/>
+
+                                        <!-- true si NO está en la lista, false si YA está -->
+                                        <input type="hidden" name="favorite"
+                                               th:value="${favoriteIds.contains(pelicula.id)} ? false : true"/>
+
+                                        <button type="submit" class="btn-icon"
+                                                th:title="${favoriteIds.contains(pelicula.id)}
+                                                ? 'Quitar de mi lista'
+                                                : 'Agregar a mi lista'">
+                                            <i th:class="${favoriteIds.contains(pelicula.id)}
+                                               ? 'bi bi-check-lg'
+                                               : 'bi bi-plus-lg'"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- like / dislike de ejemplo -->
+                                    <button class="btn-icon" title="Me gusta"><i class="bi bi-hand-thumbs-up"></i></button>
+                                    <button class="btn-icon" title="No me gusta"><i class="bi bi-hand-thumbs-down"></i></button>
+
+                                    <!-- detalles -->
+                                    <a class="btn-icon" th:href="@{'/movie/' + ${pelicula.id}}" title="Más información">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+
+                                <p class="pelicula-overview" th:text="${pelicula.overview}">Descripción</p>
                             </div>
-                            <p class="pelicula-overview" th:text="${pelicula.overview}">Descripción</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- =============================================================== -->
 
-            <!-- Mejor Valoradas -->
-            <div class="container py-4">
-                <h1>Mejor Valoradas</h1>
-                <div class="peliculas-container">
-                    <div th:each="pelicula : ${mejorValoradas}" class="pelicula-card">
-                        <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
-                             th:alt="${pelicula.title}" />
-                        <div class="pelicula-overlay">
-                            <div class="pelicula-title" th:text="${pelicula.title}">Título</div>
-                            <div class="pelicula-buttons">
-                                <button class="btn-play" title="Ver ahora">
-                                    <i class="bi bi-play-fill"></i> Ver
-                                </button>
-                                <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                    <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                    <input type="hidden" name="favorite" value="true" />
-                                    <button type="submit" class="btn-icon" title="Agregar a mi lista">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                </form>
-                                <button class="btn-icon" title="Me gusta">
-                                    <i class="bi bi-hand-thumbs-up"></i>
-                                </button>
-                                <button class="btn-icon" title="No me gusta">
-                                    <i class="bi bi-hand-thumbs-down"></i>
-                                </button>
-                                <button class="btn-icon" title="Más información">
-                                    <i class="bi bi-info-circle"></i>
-                                </button>
-                            </div>
-                            <p class="pelicula-overview" th:text="${pelicula.overview}">Descripción</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- En Cartelera -->
-            <div class="container py-4">
-                <h1>En Cartelera</h1>
-                <div class="peliculas-container">
-                    <div th:each="pelicula : ${cartelera}" class="pelicula-card">
-                        <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
-                             th:alt="${pelicula.title}" />
-                        <div class="pelicula-overlay">
-                            <div class="pelicula-title" th:text="${pelicula.title}">Título</div>
-                            <div class="pelicula-buttons">
-                                <button class="btn-play" title="Ver ahora">
-                                    <i class="bi bi-play-fill"></i> Ver
-                                </button>
-                                <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                    <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                    <input type="hidden" name="favorite" value="true" />
-                                    <button type="submit" class="btn-icon" title="Agregar a mi lista">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                </form>
-                                <button class="btn-icon" title="Me gusta">
-                                    <i class="bi bi-hand-thumbs-up"></i>
-                                </button>
-                                <button class="btn-icon" title="No me gusta">
-                                    <i class="bi bi-hand-thumbs-down"></i>
-                                </button>
-                                <button class="btn-icon" title="Más información">
-                                    <i class="bi bi-info-circle"></i>
-                                </button>
-                            </div>
-                            <p class="pelicula-overview" th:text="${pelicula.overview}">Descripción</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Próximamente -->
-            <div class="container py-4">
-                <h1>Próximamente</h1>
-                <div class="peliculas-container">
-                    <div th:each="pelicula : ${proximas}" class="pelicula-card">
-                        <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${pelicula.posterPath}}"
-                             th:alt="${pelicula.title}" />
-                        <div class="pelicula-overlay">
-                            <div class="pelicula-title" th:text="${pelicula.title}">Título</div>
-                            <div class="pelicula-buttons">
-                                <button class="btn-play" title="Ver ahora">
-                                    <i class="bi bi-play-fill"></i> Ver
-                                </button>
-                                <form th:action="@{/favorite}" method="post" style="display:inline;">
-                                    <input type="hidden" name="mediaId" th:value="${pelicula.id}" />
-                                    <input type="hidden" name="favorite" value="true" />
-                                    <button type="submit" class="btn-icon" title="Agregar a mi lista">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                </form>
-                                <button class="btn-icon" title="Me gusta">
-                                    <i class="bi bi-hand-thumbs-up"></i>
-                                </button>
-                                <button class="btn-icon" title="No me gusta">
-                                    <i class="bi bi-hand-thumbs-down"></i>
-                                </button>
-                                <button class="btn-icon" title="Más información">
-                                    <i class="bi bi-info-circle"></i>
-                                </button>
-                            </div>
-                            <p class="pelicula-overview" th:text="${pelicula.overview}">Descripción</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- render de cada sección -->
+            <div th:replace="this :: carrusel('Películas Populares', ${populares})"></div>
+            <div th:replace="this :: carrusel('Mejor Valoradas', ${mejorValoradas})"></div>
+            <div th:replace="this :: carrusel('En Cartelera',     ${cartelera})"></div>
+            <div th:replace="this :: carrusel('Próximamente',     ${proximas})"></div>
 
         </section>
     </body>
